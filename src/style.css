@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+main#home {
+    background-image: linear-gradient(to bottom, rgba(113, 109, 109, 0.52), rgba(182, 74, 175, 0.73)),url("https://images.pexels.com/photos/2388569/pexels-photo-2388569.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-size: cover;
+    /* height: 100vh; */
+    background-repeat: no-repeat;
+    background-position: center center;
+}

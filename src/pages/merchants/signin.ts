@@ -1,0 +1,113 @@
+import GlobalView, {NavProps} from "../global-view";
+import axios from "axios";
+import {API_BASE_URL} from "../../../config";
+import axiosInstance from "../../utils/axiosInstance";
+import { LoginDto, ACCESS_TYPE } from '../../../types';
+import { saveItemToLocalStorage } from "../../utils";
+
+
+export default class MerchantLogin extends GlobalView {
+    constructor(params: any) {
+        super(params);
+        this.setTitle("Login | Merchant")
+    }
+
+    async renderHtml() {
+        return `
+        ${this.navBar()}
+        <main id="home" class="flex items-center h-screen">
+            <div class="relative pt-28 sm:w-2/6 mx-auto">
+                <div class="bg-white shadow-md rounded px-12 py-12 ">
+                    <h1 class="text-2xl font-semibold text-gray-900">Login as Merchant</h1>
+
+                    <form class="block text-sm" id="merchant-login">
+                        <div>
+                            <div class="mt-6">
+                                <label class="block text-gray-700 font-medium" for="username">UserName</label>
+                                <input name="username" data-username id="username" type="text" placeholder="johndoe" class="text-base border w-full h-5 px-4 py-4 mt-2 hover:outline-none focus:outline-none focus:ring focus:ring-offset-2 focus:ring-green-900 focus:ring-opacity-50 rounded">
+                            </div>
+                            
+                            <div class="relative mt-6">
+                                <div class="absolute bottom-0.5 right-0 flex items-center px-2">
+                                    <input class="hidden password-toggle" id="toggle" type="checkbox" data-password-toggle />
+                                    <label class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer toggle-password-label" for="toggle">show</label>
+                                </div>
+                                <label class="inline-block text-gray-700 font-medium" for="password">Password</label>
+                                <input name="password" data-password id="password" type="password" placeholder="Enter password" class="text-base border w-full h-5 px-4 py-4 mt-2 hover:outline-none focus:outline-none focus:ring focus:ring-offset-2 focus:ring-green-900 focus:ring-opacity-50 rounded">
+                            </div>
+
+                            <div class="inline-flex items-center mt-6">
+                                <span class="text-gray-500 ml-2">New Here?</span> <a href="/merchant/signup">Sign Up</a>
+                            </div>
+                        </div>
+                          <button type="submit" class="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-700 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                              <svg class="h-5 w-5 text-slate-500 group-hover:text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
+                              </svg>
+                            </span>
+                            Login
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </main>
+        `
+    }
+
+}
+
+const handleLogin = async (params: LoginDto | Record<string, string>) => {
+    try {
+        const request = await axiosInstance.request({
+            url: `/sign-in`,
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            data: {...params, accessType: ACCESS_TYPE.MERCHANT}
+        })
+        if (request.status === 200) {
+            alert("done")
+            saveItemToLocalStorage('user', {...request.data, type: ACCESS_TYPE.MERCHANT})
+            window.location.href = "/merchant/dashboard"
+        }
+    } catch (error) {
+        console.log("error", error.message)
+    }
+}
+
+const submitForm = async (e) => {
+    e.preventDefault();
+    const formEl = e.target;
+    var formData = new FormData(formEl);
+    let params: LoginDto | Record<string, string> = {}
+    for (const item of formData.entries()) {
+        params[item[0]] = item[1] as string
+    }
+    await handleLogin(params)
+}
+const startApp = async() => {
+   if (window.location.pathname === '/merchant/login') {
+    const passwordToggle: HTMLInputElement | any = document.querySelector('input[data-password-toggle]')
+    const dataForm: HTMLFormElement | any = document.querySelector('#merchant-login');
+    
+    passwordToggle.addEventListener('change', () => {
+      const password: any = document.querySelector('input[data-password]'),
+        passwordLabel: any = document.querySelector('.toggle-password-label')
+        if (password.type === 'password') {
+            password.type = 'text'
+            passwordLabel.innerHTML = 'hide'
+          } else {
+            password.type = 'password'
+            passwordLabel.innerHTML = 'show'
+          }
+        
+          password.focus()
+    })
+
+    dataForm.addEventListener('submit', submitForm);
+   }
+};
+window.addEventListener(
+    "DOMContentLoaded", startApp
+  );

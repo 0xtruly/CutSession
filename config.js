@@ -1,0 +1,1 @@
+export const API_BASE_URL = `https://stoplight.io/mocks/pipeline/pipelinev2-projects/111233856`
