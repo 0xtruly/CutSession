@@ -16,7 +16,7 @@ export default class MerchantLogin extends GlobalView {
         return `
         ${this.navBar()}
         <main id="home" class="flex items-center h-screen">
-            <div class="relative pt-28 sm:w-2/6 mx-auto">
+            <div class="relative pt-28 mx-auto">
                 <div class="bg-white shadow-md rounded px-12 py-12 ">
                     <h1 class="text-2xl font-semibold text-gray-900">Login as Merchant</h1>
 
@@ -66,8 +66,7 @@ const handleLogin = async (params: LoginDto | Record<string, string>) => {
             headers: { 'Content-Type': 'application/json' },
             data: {...params, accessType: ACCESS_TYPE.MERCHANT}
         })
-        if (request.status === 200) {
-            alert("done")
+        if (request.status === 200) { 
             saveItemToLocalStorage('user', {...request.data, type: ACCESS_TYPE.MERCHANT})
             window.location.href = "/merchant/dashboard"
         }

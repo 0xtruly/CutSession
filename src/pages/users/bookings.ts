@@ -1,8 +1,6 @@
 import GlobalView, {NavProps} from "../global-view";
-import axios from "axios";
-import {API_BASE_URL} from "../../../config";
 import axiosInstance from "../../utils/axiosInstance";
-import { UserData, StudioSessionsResDto, BookedSessionDto, BookedSessionResDto, ACCESS_TYPE } from './../../../types';
+import { UserData, BookedSessionDto, BookedSessionResDto, ACCESS_TYPE } from './../../../types';
 import { getItemFromLocalStorage } from "../../utils";
 
 export default class BookedSessions extends GlobalView {
@@ -10,6 +8,14 @@ export default class BookedSessions extends GlobalView {
         super(params);
         this.setTitle("Booked Sessions");
     }
+
+    protectedLink: NavProps[] = [
+      {
+          url: '/user/dashboard',
+          title: 'Merchants'
+      },
+  ]
+
 
     static formatTime(time: string) {
         const [hour, minute] = time.split(":")
@@ -102,7 +108,6 @@ const fetchBookings = async (params: BookedSessionDto) => {
       };
     try {
       const response = await axiosInstance.request(options);
-      console.log('response', response)
       const {data} = response.data;
       if (data.length > 0) {
         let userDetailCard = data.map((item, i) => {

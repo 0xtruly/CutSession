@@ -20,13 +20,6 @@ export default class SessionBooking extends GlobalView {
         },
     ]
 
-    navLink: NavProps[] = [
-        {
-            url: '/session/bookings',
-            title: 'My Bookings'
-        },
-    ]
-
     async renderHtml() {
         return `
         ${this.navBar()}
@@ -94,7 +87,6 @@ const submitForm = async (e) => {
     if (user && user.type === ACCESS_TYPE.USER) {
         params.userId = (user && user.userId.length >= 15) ? user.userId : "6cbfba82-c0f9-4a28-e093-ae93ea99a070"
     }
-    console.log('params', params)
     await handleSessionBooking(params)
 }
 

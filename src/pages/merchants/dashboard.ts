@@ -40,7 +40,7 @@ export default class StudioSessions extends GlobalView {
         <div class="bg-gray-100 w-full max-w-2xl px-4 border rounded-lg pb-6 border-gray-200 dark:border-gray-300 min-h-screen" >
             <div class="flex items-center border-b border-gray-200 dark:border-gray-700  justify-between px-6 py-3">
                 <p class="focus:outline-none text-base lg:text-xl font-semibold leading-tight text-gray-600">Studio Sessions</p>
-                <a href="/merchant/session/create" class="focus:outline-none flex cursor-pointer items-center justify-center px-3 py-2.5 border rounded border-gray-400 bg-slate-700 ">
+                <a href="/session/create" class="focus:outline-none flex cursor-pointer items-center justify-center px-3 py-2.5 border rounded border-gray-400 bg-slate-700 ">
                     <p  class="focus:outline-none text-xs md:text-sm leading-none text-white">Create Session</p>
                 </a>
             </div>
@@ -62,7 +62,6 @@ const fetchStudioSessions = async (merchantId: string) => {
       };
     try {
       const response = await axiosInstance.request(options);
-      console.log('response', response)
       return response.data
     } catch (error) {
       console.error(error);

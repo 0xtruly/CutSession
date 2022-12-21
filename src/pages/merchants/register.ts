@@ -23,8 +23,8 @@ export default class MerchantSignUp extends GlobalView {
     async renderHtml() {
         return `
         ${this.navBar()}
-        <main id="home" class="flex items-center justify-center h-full">
-            <div class="relative pt-28 sm:w-2/6 mx-auto">
+        <main id="home" class="flex items-center justify-center h-screen">
+            <div class="relative pt-28  mx-auto">
                 <div class="bg-white shadow-md rounded px-12 py-12 ">
                     <h1 class="text-2xl font-semibold text-gray-900">Create a merchant account</h1>
 
@@ -97,8 +97,6 @@ const handleSignup = async (params: MerchantSignUpDto | Record<string, string>) 
             }
         })
         if (request.status === 200) {
-            alert("done")
-            console.log("data", request.data)
             window.location.href = "/merchant/login"
         }
     } catch (error) {
@@ -115,7 +113,6 @@ const submitForm = async (e) => {
         params[item[0]] = item[1] as string
     }
     await handleSignup(params)
-    console.log('params', params)
 }
 const startApp = async() => {
    if (window.location.pathname === 'merchant/signup') {

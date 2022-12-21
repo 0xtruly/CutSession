@@ -57,7 +57,7 @@ const router = async () => {
         { path: '/user/login', view: UserLogin },
         { path: '/user/dashboard', view: MerchantList },
         { path: '/merchant/dashboard', view: StudioSessions },
-        { path: '/merchant/session/create', view: CreateStudioSession },
+        { path: '/session/create', view: CreateStudioSession },
         { path: '/merchant/session/:id', view: MerchantStudioSessions },
         { path: '/session/book/:id', view: SessionBooking },
         { path: '/session/bookings', view: BookedSessions },
@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('click', e => {
         requestAnimationFrame(() => {
             if (url !== location.href) {
-                console.log('url changed');
                 url = location.href
             }
             let dataLink = (e.target as HTMLAnchorElement).matches('[data-link]')

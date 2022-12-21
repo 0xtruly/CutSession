@@ -6,7 +6,6 @@ export type NavProps = {
     title: string,
 }
 let user: UserData = getItemFromLocalStorage('user');
-console.log('user', user)
 export default class GlobalView {
     params: any;
     navLink: NavProps[];

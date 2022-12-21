@@ -23,8 +23,8 @@ export default class UserSignUp extends GlobalView {
     async renderHtml() {
         return `
         ${this.navBar()}
-        <main id="home" class="flex items-center justify-center h-full">
-            <div class="relative pt-28 sm:w-2/6 mx-auto">
+        <main id="home" class="flex items-center justify-center h-screen">
+            <div class="relative pt-28 mx-auto">
                 <div class="bg-white shadow-md rounded px-12 py-12 mb-8">
                     <h1 class="text-2xl font-semibold text-gray-900">Create a user account</h1>
 
@@ -102,7 +102,6 @@ const handleSignup = async (params: UserSignupDto | Record<string, string>) => {
             })
         })
         if (request.status === 200) {
-            console.log("data", request.data)
             window.location.href = "/user/login"
         }
     } catch (error) {
