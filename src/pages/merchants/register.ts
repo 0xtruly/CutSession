@@ -57,7 +57,7 @@ export default class MerchantSignUp extends GlobalView {
                             
                             <div class="relative mt-6">
                                 <div class="absolute bottom-0.5 right-0 flex items-center px-2">
-                                    <input class="hidden password-toggle" id="toggle" type="checkbox" data-password-toggle />
+                                    <input class="hidden password-toggle" id="merchant-signup-toggle" type="checkbox" data-password-toggle />
                                     <label class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer toggle-password-label" for="toggle">show</label>
                                 </div>
                                 <label class="inline-block text-gray-700 font-medium" for="password">Password</label>
@@ -87,15 +87,16 @@ export default class MerchantSignUp extends GlobalView {
 }
 
 const handleSignup = async (params: MerchantSignUpDto | Record<string, string>) => {
+    const options = {
+        method: "POST",
+        url: `/register/merchants`,
+        headers: {'Content-Type': 'application/json', Prefer: 'code=200, dynamic=true'},
+        data: {
+            ...params
+        }
+    }
     try {
-        const request = await axiosInstance.request({
-            url: `/register/merchants`,
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            data: {
-                ...params
-            }
-        })
+        const request = await axiosInstance.request(options)
         if (request.status === 200) {
             window.location.href = "/merchant/login"
         }
@@ -114,13 +115,16 @@ const submitForm = async (e) => {
     }
     await handleSignup(params)
 }
-const startApp = async() => {
-   if (window.location.pathname === 'merchant/signup') {
-    const passwordToggle: HTMLInputElement | any = document.querySelector('input[data-password-toggle]')
-    const dataForm: HTMLFormElement | any = document.querySelector('#merchant-signup');
-    
-    passwordToggle.addEventListener('change', () => {
-      const password: any = document.querySelector('input[data-password]'),
+
+document.body.addEventListener('submit', async (e) => {
+    if (e && (e.target as HTMLButtonElement).id === 'merchant-signup') {
+        await submitForm(e)
+    }
+})
+
+window.addEventListener('change', async (e) => {
+    if (e && (e.target as HTMLInputElement).id === 'merchant-signup-toggle' && (e.target as HTMLInputElement).type === 'checkbox') {
+        const password: any = document.querySelector('input[data-password]'),
         passwordLabel: any = document.querySelector('.toggle-password-label')
         if (password.type === 'password') {
             password.type = 'text'
@@ -131,11 +135,5 @@ const startApp = async() => {
           }
         
           password.focus()
-    })
-
-    dataForm.addEventListener('submit', submitForm);
-   }
-};
-window.addEventListener(
-    "DOMContentLoaded", startApp
-  );
+    }
+})

@@ -149,6 +149,7 @@ const loadCreateSession = async() => {
 
 document.body.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (e && (e.target as HTMLButtonElement).id === 'create-session') {
         let startDateField: HTMLInputElement | any = document.querySelector('#startsAt'),
     startDateLabel: HTMLLabelElement | any = document.querySelector('label[for=startsAt]'),
     formButton: HTMLButtonElement | any = document.querySelector('#create-session-btn'),
@@ -189,9 +190,8 @@ document.body.addEventListener('submit', async (e) => {
         endDateField.classList.remove('border-2', 'border-red-700', 'animate-pulse')
         await submitForm(e)
     }
-    // if (e && (e.target as HTMLButtonElement).id === 'create-session') {
-    //     await submitForm(e)
-    // }
+      
+    }
 })
 
 

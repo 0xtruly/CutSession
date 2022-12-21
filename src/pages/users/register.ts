@@ -92,15 +92,16 @@ export default class UserSignUp extends GlobalView {
 }
 
 const handleSignup = async (params: UserSignupDto | Record<string, string>) => {
+    const options = {
+        method: "POST",
+        url: `/register/users`,
+        headers: {'Content-Type': 'application/json', Prefer: 'code=200, dynamic=true'},
+        data: {
+            ...params
+        }
+    }
     try {
-        const request = await axiosInstance.request({
-            url: `/register/users`,
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify({
-                ...params,
-            })
-        })
+        const request = await axiosInstance.request(options)
         if (request.status === 200) {
             window.location.href = "/user/login"
         }
