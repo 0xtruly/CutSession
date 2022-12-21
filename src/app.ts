@@ -4,9 +4,12 @@ import CreateStudioSession from "./pages/merchants/create-studio-session";
 import StudioSessions from "./pages/merchants/dashboard";
 import MerchantSignUp from "./pages/merchants/register";
 import MerchantLogin from "./pages/merchants/signin";
+import SessionBooking from "./pages/users/book-session";
 import MerchantList from "./pages/users/dashboard";
 import UserSignUp from "./pages/users/register";
 import UserLogin from "./pages/users/signin";
+import MerchantStudioSessions from "./pages/users/studio-sessions";
+import BookedSessions from "./pages/users/bookings"
 
 
 
@@ -55,6 +58,9 @@ const router = async () => {
         { path: '/user/dashboard', view: MerchantList },
         { path: '/merchant/dashboard', view: StudioSessions },
         { path: '/merchant/session/create', view: CreateStudioSession },
+        { path: '/merchant/session/:id', view: MerchantStudioSessions },
+        { path: '/session/book/:id', view: SessionBooking },
+        { path: '/session/bookings', view: BookedSessions },
     ];
 
     // Test each route for a potential match.

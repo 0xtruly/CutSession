@@ -1,15 +1,24 @@
 import GlobalView, {NavProps} from "../global-view";
-import axios from "axios";
-import {API_BASE_URL} from "../../../config";
 import axiosInstance from "../../utils/axiosInstance";
 import { UserData, StudioSessionsResDto, ACCESS_TYPE } from './../../../types';
 import { getItemFromLocalStorage } from "../../utils";
 
-export default class StudioSessions extends GlobalView {
+export default class MerchantStudioSessions extends GlobalView {
     constructor(params: any) {
         super(params);
         this.setTitle("Merchant  ");
     }
+
+    protectedLink: NavProps[] = [
+        {
+            url: '/user/dashboard',
+            title: 'Merchants'
+        },
+        {
+            url: '/session/bookings',
+            title: 'My Bookings'
+        },
+    ]
 
     static formatTime(time: string) {
         const [hour, minute] = time.split(":")
@@ -28,9 +37,11 @@ export default class StudioSessions extends GlobalView {
                     ${this.formatTime(startsAt)} — ${this.formatTime(endsAt)} on ${type+"s"}
                     </p>
                     </div>
+                    <a href="/session/book/${id}" class="focus:outline-none flex cursor-pointer items-center justify-center px-3 py-2.5 border rounded border-gray-400 bg-slate-700 ">
+                        <p  class="focus:outline-none text-xs md:text-sm leading-none text-white">Book Session</p>
+                    </a>
                 </div>
                 `;
-
     }
 
     async renderHtml() {
@@ -40,9 +51,6 @@ export default class StudioSessions extends GlobalView {
         <div class="bg-gray-100 w-full max-w-2xl px-4 border rounded-lg pb-6 border-gray-200 dark:border-gray-300 min-h-screen" >
             <div class="flex items-center border-b border-gray-200 dark:border-gray-700  justify-between px-6 py-3">
                 <p class="focus:outline-none text-base lg:text-xl font-semibold leading-tight text-gray-600">Studio Sessions</p>
-                <a href="/merchant/session/create" class="focus:outline-none flex cursor-pointer items-center justify-center px-3 py-2.5 border rounded border-gray-400 bg-slate-700 ">
-                    <p  class="focus:outline-none text-xs md:text-sm leading-none text-white">Create Session</p>
-                </a>
             </div>
             <div id="merchantList" class="max-w-2xl w-full m-auto mt-8">
                 Loading...
@@ -62,7 +70,6 @@ const fetchStudioSessions = async (merchantId: string) => {
       };
     try {
       const response = await axiosInstance.request(options);
-      console.log('response', response)
       return response.data
     } catch (error) {
       console.error(error);
@@ -71,20 +78,20 @@ const fetchStudioSessions = async (merchantId: string) => {
 
 
 const loadStudioSessions = async() => {
-    if (window.location.pathname === "/merchant/dashboard") {
-        let user: UserData = getItemFromLocalStorage('user');
-        const merchantId = (user && user.merchantId.length >= 15) ? user.merchantId : "6cbfba82-c0f9-4a28-e093-ae93ea99a070"
-        const data: StudioSessionsResDto[] = await fetchStudioSessions(merchantId);
+    let user: UserData = getItemFromLocalStorage('user');
+    if (window.location.pathname.startsWith("/merchant/session")) {
+            const merchantId = window.location.pathname.replace("/merchant/session/", "")
+            const data: StudioSessionsResDto[] = await fetchStudioSessions(merchantId);
         let userDetailCard = data.map((item, i) => {
-          return StudioSessions.renderMerchantStudioSessions(item, i)
+          return MerchantStudioSessions.renderMerchantStudioSessions(item, i)
         }).join("")
     
         let merchantDom = document.getElementById("merchantList")
         if (merchantDom) {
           merchantDom.innerHTML = userDetailCard
         }
-      }
+        }
 };
-window.addEventListener(
+document.addEventListener(
     "DOMContentLoaded", loadStudioSessions
   );

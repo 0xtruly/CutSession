@@ -10,13 +10,20 @@ export default class MerchantList extends GlobalView {
         this.setTitle("Dashboard");
     }
 
+    protectedLink: NavProps[] = [
+        {
+            url: '/session/bookings',
+            title: 'My Bookings'
+        },
+    ]
+
     static renderMerchantComponent(item: UserLoginResDto) {
             const { phoneNumber, name, cityOfOperation, email, merchantId, userId, cityOfResidence } = item
             const id = merchantId ?? userId;
             const city = cityOfOperation ?? cityOfResidence;
             return `
-                    <div id="${id}" class="flex-grow rounded w-80 lg:w-1/4 shadow-xl shadow-gray-100/50 py-3 bg-white border border-card">
-                        <a class="flex flex-col items-center">
+                    <a href="/merchant/session/${id}" id="${id}" class="flex-grow rounded w-80 lg:w-1/4 shadow-xl shadow-gray-100/50 py-3 bg-white border border-card">
+                        <div class="flex flex-col items-center">
                             <div class="photo-wrapper p-2 mb-2">
                             <img 
                                 class="w-12 h-12 rounded-full mx-auto" 
@@ -25,18 +32,13 @@ export default class MerchantList extends GlobalView {
                             </div>
                             <p class="font-medium text-base capitalize">${name}</p>
                             <p class="font-light text-sm text-gray-600">${city}</p>
-                        </a>
-                        <div class="my-2 border-t-2 border-slate-200 flex flex-col">
-                            <a class="flex px-2">
-                                Email:
-                                <p class="text-gray-600 ml-2 text-sm text-ellipsis overflow-hidden ...">${email}</p>
-                            </a>
-                            <a class="flex px-2">
-                            Phone:
-                                <p class="text-gray-600 ml-2 text-sm">${phoneNumber}</p>
-                            </a>
                         </div>
-                    </div>
+
+                        <div class="my-2 border-t-2 border-slate-200">
+                            <p class="text-gray-600 ml-2 text-xs lg:text-sm text-ellipsis overflow-hidden ..."> Email: ${email}</p>
+                            <p class="text-gray-600 ml-2 text-xs lg:text-sm">Phone: ${phoneNumber}</p>
+                        </div>
+                    </a>
                 `;
 
     }

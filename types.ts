@@ -68,3 +68,29 @@ export type CreateSessionDto = {
     endsAt: string,
     type: STUDIO_SESSION_TYPE
 }
+
+export type SessionBookingDto = {
+    sessionId: string,
+    date: string,
+    userId: string,
+    notes: string,
+    title: string,
+}
+
+export type BookedSessionDto = {
+    city: string,
+    merchant?: string,
+    period?: string,
+}
+
+export type BookedSessionResDto = {
+    bookingId: string,
+    bookingRef: string,
+    userId: string,
+    sessionId: string,
+    date: string,
+    startsAt: string,
+    endsAt: string,
+    notes?: string,
+    title?: string
+}
