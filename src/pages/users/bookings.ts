@@ -164,23 +164,3 @@ document.body.addEventListener('change', async (e) => {
         }
     }
 })
-
-
-const loadStudioSessions = async() => {
-    if (window.location.pathname === "/merchant/dashboard") {
-        let user: UserData = getItemFromLocalStorage('user');
-        const merchantId = (user && user.merchantId.length >= 15) ? user.merchantId : "6cbfba82-c0f9-4a28-e093-ae93ea99a070"
-        const data: BookedSessionResDto[] = await fetchStudioSessions(merchantId);
-        let userDetailCard = data.map((item, i) => {
-          return StudioSessions.renderMerchantStudioSessions(item, i)
-        }).join("")
-    
-        let merchantDom = document.getElementById("sessionList")
-        if (merchantDom) {
-          merchantDom.innerHTML = userDetailCard
-        }
-      }
-};
-window.addEventListener(
-    "DOMContentLoaded", loadStudioSessions
-  );

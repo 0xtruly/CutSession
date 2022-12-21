@@ -196,44 +196,45 @@ document.body.addEventListener('submit', async (e) => {
 
 
 document.body.addEventListener('change', async (e) => {
-    let startDateField: HTMLInputElement | any = document.querySelector('#startsAt'),
-    startDateLabel: HTMLLabelElement | any = document.querySelector('label[for=startsAt]'),
-    formButton: HTMLButtonElement | any = document.querySelector('#search-session-btn'),
-    timeSlotField: HTMLSelectElement | any = document.querySelector('#timeSlot'),
-    endDateField: HTMLInputElement | any = document.querySelector('#endsAt');
-    if (e && (e.target as HTMLInputElement).id === 'type') {
-        if (e.target.value === STUDIO_SESSION_TYPE.WEEKDAY) {
-            const startDate = `${(new Date(Date.now() - timeZoneOffset)).toISOString().split('T')[0]}T09:00`;
-            startDateField.min = startDate;
-            startDateField.defaultValue = startDate;
-            startDateLabel.textContent = "Starts At (intervals can be between 09:00-20:00)"
-
-            const endTime = getEndTime(startDate, Number(timeSlotField.value));
-            const endDate = getEndDate(startDate)
-            endDateField.defaultValue = `${endDate}T${endTime}`
-        } else {
-            const startDate = `${(new Date(Date.now() - timeZoneOffset)).toISOString().split('T')[0]}T10:00`;
-            startDateField.min = startDate;
-            startDateField.defaultValue = startDate;
-            startDateLabel.textContent = "Starts At (intervals can be between 10:00-22:00)"
-
-            const endTime = getEndTime(startDate, Number(timeSlotField.value));
-            const endDate = getEndDate(startDate)
+    if (window.location.pathname === '/session/create') {
+        let startDateField: HTMLInputElement | any = document.querySelector('#startsAt'),
+        startDateLabel: HTMLLabelElement | any = document.querySelector('label[for=startsAt]'),
+        formButton: HTMLButtonElement | any = document.querySelector('#search-session-btn'),
+        timeSlotField: HTMLSelectElement | any = document.querySelector('#timeSlot'),
+        endDateField: HTMLInputElement | any = document.querySelector('#endsAt');
+        if (e && (e.target as HTMLInputElement).id === 'type') {
+            if (e.target.value === STUDIO_SESSION_TYPE.WEEKDAY) {
+                const startDate = `${(new Date(Date.now() - timeZoneOffset)).toISOString().split('T')[0]}T09:00`;
+                startDateField.min = startDate;
+                startDateField.defaultValue = startDate;
+                startDateLabel.textContent = "Starts At (intervals can be between 09:00-20:00)"
+    
+                const endTime = getEndTime(startDate, Number(timeSlotField.value));
+                const endDate = getEndDate(startDate)
+                endDateField.defaultValue = `${endDate}T${endTime}`
+            } else {
+                const startDate = `${(new Date(Date.now() - timeZoneOffset)).toISOString().split('T')[0]}T10:00`;
+                startDateField.min = startDate;
+                startDateField.defaultValue = startDate;
+                startDateLabel.textContent = "Starts At (intervals can be between 10:00-22:00)"
+    
+                const endTime = getEndTime(startDate, Number(timeSlotField.value));
+                const endDate = getEndDate(startDate)
+                endDateField.defaultValue = `${endDate}T${endTime}`
+            }
+        }
+        if (e && (e.target as HTMLInputElement).id === 'startsAt') {
+            const endTime = getEndTime(e.target.value, Number(timeSlotField.value));
+            const endDate = getEndDate(e.target.value)
+            endDateField.value = `${endDate}T${endTime}`
+        }
+        
+        if (e && (e.target as HTMLInputElement).id === 'timeSlot') {
+            const endTime = getEndTime(startDateField.value, Number(e.target.value));
+            const endDate = getEndDate(startDateField.value)
             endDateField.defaultValue = `${endDate}T${endTime}`
         }
     }
-    if (e && (e.target as HTMLInputElement).id === 'startsAt') {
-        const endTime = getEndTime(e.target.value, Number(timeSlotField.value));
-        const endDate = getEndDate(e.target.value)
-        endDateField.value = `${endDate}T${endTime}`
-    }
-    
-    if (e && (e.target as HTMLInputElement).id === 'timeSlot') {
-        const endTime = getEndTime(startDateField.value, Number(e.target.value));
-        const endDate = getEndDate(startDateField.value)
-        endDateField.defaultValue = `${endDate}T${endTime}`
-    }
-    // endDateField.disabled = true;
   })
 
 window.addEventListener(
